@@ -6,7 +6,7 @@ class AppShared {
 
     companion object {
 
-        fun getDataRepository(): TheMovieDBRepository {
+        fun getMovieDBRepository(): TheMovieDBRepository {
             if(this.dataRepository == null) {
                 this.dataRepository = TheMovieDBRepository()
             }

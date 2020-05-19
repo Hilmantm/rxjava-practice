@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 import com.example.rxjavapractice.utils.AppShared
 
 abstract class BaseViewModel: ViewModel() {
-    val dataRepository = AppShared.getDataRepository()
+    val dataRepository = AppShared.getMovieDBRepository()
 }

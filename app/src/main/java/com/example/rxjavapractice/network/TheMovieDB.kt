@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface TheMovieDB {
 
-    @GET("/movie/popular")
+    @GET("movie/popular")
     fun getPopularMovie(
         @Query("api_key") apiKey: String
     ): Observable<Response<Movie>>
