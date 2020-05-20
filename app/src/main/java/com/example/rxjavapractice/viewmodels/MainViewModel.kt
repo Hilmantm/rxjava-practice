@@ -8,10 +8,11 @@ import com.example.rxjavapractice.models.Movie
 import com.example.rxjavapractice.models.Response
 import com.example.rxjavapractice.utils.ErrorHandler
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.logging.Handler
 
 class MainViewModel: BaseViewModel() {
 
-    private val load: MutableLiveData<Boolean> = MutableLiveData()
+    val load: MutableLiveData<Boolean> = MutableLiveData(true)
     private val results: MutableLiveData<Response<Movie>> = MutableLiveData()
     private val error: MutableLiveData<String> = MutableLiveData()
 
