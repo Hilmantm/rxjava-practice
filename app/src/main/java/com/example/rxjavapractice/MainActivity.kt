@@ -1,5 +1,6 @@
 package com.example.rxjavapractice
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -29,13 +30,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModelFactory = Injection.proviewMainViewModelFactory()
-        viewModel.getPopularMovie()
+        requestPopularMovie(true)
 
         binding.rvMovie.layoutManager = LinearLayoutManager(this)
         binding.rvMovie.hasFixedSize()
 
         binding.container.setOnRefreshListener {
-            viewModel.getPopularMovie()
+            requestPopularMovie(false)
             binding.container.isRefreshing = false
         }
 
@@ -45,6 +46,13 @@ class MainActivity : AppCompatActivity() {
             Handler().postDelayed({
                 movieListAdapter.isShimmer = false
                 movieListAdapter.notifyDataSetChanged()
+
+                binding.mainShimmer.stopShimmer()
+                binding.mainShimmer.hideShimmer()
+
+                binding.totalResult.background = null
+                binding.totalResult.text = "Total Result: ${it.total_results}"
+
             }, 3000)
         })
 
@@ -54,6 +62,24 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getLoad().observe(this, Observer {
             Log.d("MainActivity", "load observer value $it")
+//            if(it) {
+//                binding.mainShimmer.startShimmer()
+//            }
         })
+    }
+
+    private fun requestPopularMovie(first: Boolean) {
+        if(first) {
+            viewModel.getPopularMovie()
+            binding.mainShimmer.startShimmer()
+        } else {
+            viewModel.getPopularMovie()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                binding.totalResult.background = getDrawable(R.drawable.shimmer_shape)
+            }
+            binding.totalResult.text = ""
+            binding.mainShimmer.showShimmer(true)
+            binding.mainShimmer.startShimmer()
+        }
     }
 }
